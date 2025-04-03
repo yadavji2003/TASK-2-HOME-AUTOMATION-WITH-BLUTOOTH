@@ -1,0 +1,157 @@
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(8, 9, 10, 11, 12, 13);
+
+#define white 3 #define blue 4 #define green 5
+
+int tx = 1; int rx = 0;
+
+char inSerial[15];
+
+void setup() { Serial.begin(9600);
+pinMode(white, OUTPUT); 
+pinMode(blue, OUTPUT); 
+pinMode(green, OUTPUT); 
+pinMode(tx, OUTPUT); 
+pinMode(rx, INPUT); 
+digitalWrite(white, HIGH); 
+digitalWrite(blue, HIGH); 
+digitalWrite(green, HIGH); 
+lcd.begin(16, 2); 
+lcd.clear(); 
+lcd.print("MICROCONTROLLERS "); 
+lcd.setCursor(0, 1); 
+lcd.print(" LAB "); 
+delay(2000);
+lcd.clear(); 
+lcd.print("HOME AUTOMATION "); 
+lcd.setCursor(0, 1); 
+lcd.print("USING BLUETOOTH"); 
+delay(2000); lcd.clear(); 
+lcd.print("1. Bulb 1 WHITE"); 
+lcd.setCursor(0, 1); 
+lcd.print("2. Bulb 2 BLUE"); 
+delay(2000); lcd.clear(); 
+lcd.print("3. Bulb 3 GREEN");
+delay(2000); lcd.clear(); 
+lcd.print("Bulb 1 2 3 "); 
+lcd.setCursor(0, 1);
+lcd.print(" OFF OFF OFF");
+}
+void loop() { 
+int i = 0; 
+int m = 0; 
+delay(500); 
+if (Serial.available() > 0) { 
+while (Serial.available() > 0) { 
+inSerial[i] = Serial.read(); i++; 
+} 
+inSerial[i] = '\0';
+Check_Protocol(inSerial); 
+} 
+}
+void Check_Protocol(char inStr[]) 
+{ 
+int i = 0; 
+int m = 0; 
+Serial.println(inStr);
+if (!strcmp(inStr, "all on")) { 
+digitalWrite(white, LOW);
+digitalWrite(blue, LOW); 
+digitalWrite(green, LOW); 
+Serial.println("ALL ON"); 
+lcd.setCursor(4, 1); 
+lcd.print("ON "); 
+lcd.setCursor(8, 1); 
+lcd.print("ON "); 
+lcd.setCursor(12, 1); 
+lcd.print("ON "); 
+for (m = 0; m < 11; m++) 
+{ 
+inStr[m] = 0;
+}
+i = 0;
+}
+if (!strcmp(inStr, "all off")) 
+{ 
+digitalWrite(white, HIGH); 
+digitalWrite(blue, HIGH); 
+digitalWrite(green, HIGH); 
+Serial.println("ALL OFF"); 
+lcd.setCursor(4, 1); lcd.print("OFF "); 
+lcd.setCursor(8, 1); lcd.print("OFF "); 
+lcd.setCursor(12, 1); lcd.print("OFF "); 
+for (m = 0; m < 11; m++) 
+{
+inStr[m] = 0;
+}
+i = 0;
+}
+if (!strcmp(inStr, "white on")) { 
+digitalWrite(white, LOW); 
+Serial.println("White ON"); 
+lcd.setCursor(4, 1);
+lcd.print("ON "); 
+for (m = 0; m < 11; m++) 
+{
+inStr[m] = 0; 
+} 
+i = 0;
+}
+if (!strcmp(inStr, "white off")) { 
+digitalWrite(white, HIGH); 
+Serial.println("White OFF"); 
+lcd.setCursor(4, 1); 
+lcd.print("OFF "); 
+for (m = 0; m < 11; m++) { 
+inStr[m] = 0; 
+}
+i = 0;
+}
+if (!strcmp(inStr, "blue on")) {
+digitalWrite(blue, LOW);
+Serial.println("Blue ON");
+lcd.setCursor(8, 1);
+lcd.print("ON ");
+for (m = 0; m < 11; m++) {
+  inStr[m] = 0;
+}
+i = 0;
+}
+if (!strcmp(inStr, "blue off")) {
+digitalWrite(blue, HIGH);
+Serial.println("Blue OFF");
+lcd.setCursor(8, 1);
+lcd.print("OFF ");
+for (m = 0; m < 11; m++) {
+  inStr[m] = 0;
+}
+i = 0;
+} 
+if (!strcmp(inStr, "green on")) {
+digitalWrite(green, LOW);
+Serial.println("Green ON");
+lcd.setCursor(12, 1);
+lcd.print("ON ");
+for (m = 0; m < 11; m++) {
+  inStr[m] = 0;
+}
+i = 0;
+}
+if (!strcmp(inStr, "green off")) {
+digitalWrite(green, HIGH);
+Serial.println("Green OFF");
+lcd.setCursor(12, 1);
+lcd.print("OFF ");
+for (m = 0; m < 11; m++) {
+inStr[m] = 0;
+}
+i = 0;
+}
+else { 
+for (m = 0; m < 11; m++) { 
+inStr[m] = 0;
+}
+i = 0;
+}
+}
